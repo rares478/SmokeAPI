@@ -50,6 +50,7 @@ namespace store {
 
         // Finally, fetch the remote config from GitHub, and inform user about the need to restart Steam,
         // if a new config has been fetched
+        /*
         NEW_THREAD({
             try {
                 const auto github_config_opt = api::fetch_store_config();
@@ -82,6 +83,7 @@ namespace store {
                 LOG_ERROR("Failed to get remote store_mode config: {}", ex.what())
             }
         })
+        */
     }
 
     void init_store_mode() {
@@ -96,6 +98,7 @@ namespace store {
                         globals::vstdlib_module = module_handle;
 
                         if (smoke_api::config::instance.unlock_family_sharing) {
+                            LOG_DEBUG("Detouring Coroutine_Create")
                             DETOUR_VSTDLIB(Coroutine_Create)
                         }
                     } else if (name < equals > STEAMCLIENT_DLL) {

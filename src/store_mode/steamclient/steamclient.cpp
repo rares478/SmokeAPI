@@ -429,12 +429,42 @@ namespace store::steamclient {
     }
 
     void process_client_engine(uintptr_t interface) {
+        // Safety check: validate interface pointer
+        if (!util::is_valid_pointer(reinterpret_cast<void*>(interface))) {
+            LOG_ERROR("Invalid interface pointer: {}", (void*) interface)
+            return;
+        }
+
+        // Safety check: validate ordinals
+        if (store::config.client_engine_steam_client_internal_ordinal < 0 || 
+            store::config.steam_client_internal_interface_selector_ordinal < 0) {
+            LOG_ERROR("Invalid ordinals in config: internal={}, selector={}", 
+                     store::config.client_engine_steam_client_internal_ordinal,
+                     store::config.steam_client_internal_interface_selector_ordinal)
+            return;
+        }
+
         const auto* steam_client_internal = ((uintptr_t***) interface)[
             store::config.client_engine_steam_client_internal_ordinal
         ];
+
+        // Safety check: validate steam_client_internal pointer
+        if (!util::is_valid_pointer(steam_client_internal)) {
+            LOG_ERROR("Invalid steam_client_internal pointer at ordinal {}", 
+                     store::config.client_engine_steam_client_internal_ordinal)
+            return;
+        }
+
         const auto interface_selector_address = (*steam_client_internal)[
             store::config.steam_client_internal_interface_selector_ordinal
         ];
+
+        // Safety check: validate interface_selector_address
+        if (!util::is_valid_pointer(reinterpret_cast<void*>(interface_selector_address))) {
+            LOG_ERROR("Invalid interface_selector_address at ordinal {}", 
+                     store::config.steam_client_internal_interface_selector_ordinal)
+            return;
+        }
 
         LOG_DEBUG("Found interface selector at: {}", (void*) interface_selector_address)
 

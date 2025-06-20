@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.24)
 
-project(SmokeAPI VERSION 2.0.5)
+project(SmokeAPI VERSION 2.1.0)
 
 include(KoalaBox/cmake/KoalaBox.cmake)
 
