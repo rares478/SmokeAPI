@@ -1,7 +1,7 @@
 #include <store_mode/vstdlib/vstdlib.hpp>
 
 namespace store::vstdlib {
-    VIRTUAL(bool) SharedLicensesLockStatus(PARAMS(void* arg)) {
+    VIRTUAL(bool) FamilyGroupRunningApp(PARAMS(void* arg)) {
         LOG_DEBUG("{}(this={}, arg={})", __func__, THIS, arg)
         ARGS();
         return true;
@@ -17,10 +17,10 @@ namespace store::vstdlib {
         GET_ORIGINAL_HOOKED_FUNCTION(VStdLib_Callback_Interceptor)
         VStdLib_Callback_Interceptor_o(ARGS(name_ptr));
 
-        static auto lock_status_hooked = false;
+        static auto family_group_hooked = false;
         static auto stop_playing_hooked = false;
 
-        if (lock_status_hooked && stop_playing_hooked) {
+        if (family_group_hooked && stop_playing_hooked) {
             return;
         }
 
@@ -29,9 +29,9 @@ namespace store::vstdlib {
         if (data && data->get_callback_name()) {
             const auto name = String(data->get_callback_name());
             LOG_TRACE("{}(ecx={}, edx={}, name='{}')", __func__, ARGS(), name)
-            if (name == "SharedLicensesLockStatus" && !lock_status_hooked) {
-                DETOUR_ADDRESS(SharedLicensesLockStatus, data->get_callback_data()->get_callback_address())
-                lock_status_hooked = true;
+            if (name == "FamilyGroupRunningApp" && !family_group_hooked) {
+                DETOUR_ADDRESS(FamilyGroupRunningApp, data->get_callback_data()->get_callback_address())
+                family_group_hooked = true;
             } else if (name == "SharedLibraryStopPlaying" && !stop_playing_hooked) {
                 DETOUR_ADDRESS(SharedLibraryStopPlaying, data->get_callback_data()->get_callback_address())
                 stop_playing_hooked = true;
