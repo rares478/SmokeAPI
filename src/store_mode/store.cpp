@@ -50,7 +50,6 @@ namespace store {
 
         // Finally, fetch the remote config from GitHub, and inform user about the need to restart Steam,
         // if a new config has been fetched
-        /*
         NEW_THREAD({
             try {
                 const auto github_config_opt = api::fetch_store_config();
@@ -83,7 +82,6 @@ namespace store {
                 LOG_ERROR("Failed to get remote store_mode config: {}", ex.what())
             }
         })
-        */
     }
 
     void init_store_mode() {

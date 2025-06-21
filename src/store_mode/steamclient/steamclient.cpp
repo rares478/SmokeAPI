@@ -3,7 +3,6 @@
 #include <koalabox/hook.hpp>
 #include <koalabox/logger.hpp>
 #include <koalabox/util.hpp>
-
 #include <Zydis/Zydis.h>
 #include <Zydis/DecoderTypes.h>
 

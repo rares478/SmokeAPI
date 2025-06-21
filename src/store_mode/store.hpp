@@ -7,7 +7,7 @@ namespace store {
     // 1 unit offset represents 4 and 8 bytes in 32-bit and 64-bit architectures respectively.
     class StoreConfig {
     public:
-        uint32_t client_engine_steam_client_internal_ordinal = 12;
+        uint32_t client_engine_steam_client_internal_ordinal = 11;
         uint32_t steam_client_internal_interface_selector_ordinal = 18;
         uint32_t vstdlib_callback_address_offset = 20;
         uint32_t vstdlib_callback_data_offset = 0;

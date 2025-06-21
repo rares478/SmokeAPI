@@ -14,7 +14,7 @@ namespace api {
     std::optional<Vector<DLC>> fetch_dlcs_from_github(AppId_t app_id) noexcept {
         try {
             const auto* url =
-                "https://raw.githubusercontent.com/acidicoala/public-entitlements/main/steam/v2/dlc.json";
+                "https://raw.githubusercontent.com/rares478/public-entitlements/main/steam/v2/dlc.json";
             const auto json = koalabox::http_client::get_json(url);
             const auto response = json.get<AppDlcNameMap>();
 
