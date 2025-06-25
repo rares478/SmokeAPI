@@ -9,10 +9,7 @@ namespace store {
     public:
         uint32_t client_engine_steam_client_internal_ordinal = 11;
         uint32_t steam_client_internal_interface_selector_ordinal = 18;
-        uint32_t vstdlib_callback_address_offset = 20;
-        uint32_t vstdlib_callback_data_offset = 0;
-        uint32_t vstdlib_callback_interceptor_address_offset = 1;
-        uint32_t vstdlib_callback_name_offset = 4;
+        std::string family_group_running_app_pattern = "55 8B ?? ?? EC C8 ?? ?? ?? 33";
 
         // We do not use *_WITH_DEFAULT macro to ensure that overriding
         // the store_mode config requires definition of all keys
@@ -20,10 +17,7 @@ namespace store {
             StoreConfig, // NOLINT(misc-const-correctness)
             client_engine_steam_client_internal_ordinal,
             steam_client_internal_interface_selector_ordinal,
-            vstdlib_callback_address_offset,
-            vstdlib_callback_data_offset,
-            vstdlib_callback_interceptor_address_offset,
-            vstdlib_callback_name_offset
+            family_group_running_app_pattern
         )
 
         bool operator==(const StoreConfig& other) const = default;

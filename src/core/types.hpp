@@ -58,7 +58,6 @@
     koalabox::hook::detour_or_warn(MODULE_HANDLE, NAME, reinterpret_cast<uintptr_t>(&FUNC));
 
 #define DETOUR_STEAMCLIENT(FUNC) $DETOUR(FUNC, #FUNC, globals::steamclient_module)
-#define DETOUR_VSTDLIB(FUNC) $DETOUR(vstdlib::FUNC, #FUNC, globals::vstdlib_module)
 
 #ifdef _WIN64
 #define COMPILE_STORE_MODE 0

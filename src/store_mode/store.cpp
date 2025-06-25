@@ -1,5 +1,4 @@
 #include <store_mode/store.hpp>
-#include <store_mode/vstdlib/vstdlib.hpp>
 #include <store_mode/store_cache.hpp>
 #include <store_mode/store_api.hpp>
 #include <smoke_api/config.hpp>
@@ -8,6 +7,7 @@
 #include <koalabox/logger.hpp>
 #include <koalabox/ipc.hpp>
 #include <common/steamclient_exports.hpp>
+#include <store_mode/steamclient/steamclient.hpp>
 
 namespace store {
 
@@ -88,26 +88,20 @@ namespace store {
         init_store_config();
 
         koalabox::dll_monitor::init_listener(
-            {VSTDLIB_DLL, STEAMCLIENT_DLL}, [](const HMODULE& module_handle, const String& name) {
+            {STEAMCLIENT_DLL}, [](const HMODULE& module_handle, const String& name) {
                 try {
-                    if (name < equals > VSTDLIB_DLL) {
-                        // VStdLib DLL handles Family Sharing functions
-
-                        globals::vstdlib_module = module_handle;
-
-                        if (smoke_api::config::instance.unlock_family_sharing) {
-                            LOG_DEBUG("Detouring Coroutine_Create")
-                            DETOUR_VSTDLIB(Coroutine_Create)
-                        }
-                    } else if (name < equals > STEAMCLIENT_DLL) {
+                    if (name < equals > STEAMCLIENT_DLL) {
                         // SteamClient DLL handles unlocking functions
 
                         globals::steamclient_module = module_handle;
 
                         DETOUR_STEAMCLIENT(CreateInterface)
+                        if (smoke_api::config::instance.unlock_family_sharing) {
+                            store::steamclient::hook_family_group_running_app();
+                        }
                     }
 
-                    if (globals::vstdlib_module != nullptr && globals::steamclient_module != nullptr) {
+                    if (globals::steamclient_module != nullptr) {
                         koalabox::dll_monitor::shutdown_listener();
                     }
                 } catch (const Exception& ex) {

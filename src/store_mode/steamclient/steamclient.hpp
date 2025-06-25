@@ -29,11 +29,15 @@ VIRTUAL(bool) IClientUser_BIsSubscribedApp(PARAMS(AppId_t));
 // IClientUtils
 VIRTUAL(AppId_t) IClientUtils_GetAppID(PARAMS());
 
+// Steam's new Family Sharing 
+VIRTUAL(bool) FamilyGroupRunningApp(PARAMS(void* mysteryInterface));
+
 namespace store::steamclient {
 
     /// We need this interface in other IClient* functions in order to call other functions
     extern Map<String, void*> interface_name_to_address_map;
 
     void process_client_engine(uintptr_t interface);
+    void hook_family_group_running_app();
 
 }

@@ -5,6 +5,9 @@
 #include <koalabox/util.hpp>
 #include <Zydis/Zydis.h>
 #include <Zydis/DecoderTypes.h>
+#include <koalabox/patcher.hpp>
+#include <koalabox/win_util.hpp>
+#include <core/globals.hpp>
 
 namespace store::steamclient {
     using namespace koalabox;
@@ -481,4 +484,27 @@ namespace store::steamclient {
         process_interface_selector(interface_selector_address, visited_addresses);
     }
 
+    uintptr_t find_family_group_running_app() {
+        auto info = koalabox::win_util::get_module_info_or_throw(globals::steamclient_module);
+        const std::string& pattern = store::config.family_group_running_app_pattern;
+        uintptr_t addr = koalabox::patcher::find_pattern_address(info, "FamilyGroupRunningApp", pattern);
+        if (addr) {
+            LOG_INFO("Found FamilyGroupRunningApp at: {}", (void*)addr);
+
+        } else {
+            LOG_ERROR("Failed to find FamilyGroupRunningApp pattern");
+        }
+        return addr;
+    }
+
+    void hook_family_group_running_app() {
+        uintptr_t addr = find_family_group_running_app();
+        if (addr) {
+            koalabox::hook::detour_or_throw(addr, "FamilyGroupRunningApp", reinterpret_cast<uintptr_t>(&FamilyGroupRunningApp));
+            LOG_INFO("Hooked FamilyGroupRunningApp at: {}", (void*)addr);
+
+        } else {
+            LOG_ERROR("Could not hook FamilyGroupRunningApp: pattern not found");
+        }
+    }
 }

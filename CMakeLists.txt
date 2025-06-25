@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.24)
 
-project(SmokeAPI VERSION 2.1.0)
+project(SmokeAPI VERSION 2.1.5)
 
 include(KoalaBox/cmake/KoalaBox.cmake)
 
@@ -84,8 +84,7 @@ if (CMAKE_SIZEOF_VOID_P EQUAL 4)
         src/store_mode/steamclient/client_utils.cpp
         src/store_mode/steamclient/steamclient.cpp
         src/store_mode/steamclient/steamclient.hpp
-        src/store_mode/vstdlib/vstdlib.cpp
-        src/store_mode/vstdlib/vstdlib.hpp
+        src/store_mode/steamclient/family_group_client.cpp
         src/store_mode/store.cpp
         src/store_mode/store.hpp
         src/store_mode/store_api.cpp
